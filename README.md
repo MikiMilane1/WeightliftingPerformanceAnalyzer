@@ -5,7 +5,7 @@ Using data stored in an SQLAlchemy database via a REST API, I'm looking into how
 - sleep duration
 - workout timing (morning or evening)
 - performance supplement dosage and timing (pre or post-workout)
-- 
+  
 impact power production during weightlifting sessions.
 
 To ensure accuracy, I'm only analyzing exercises that fall within the hypertrophy and strength rep range (1 to 15), with both concentric and eccentric phases. 
