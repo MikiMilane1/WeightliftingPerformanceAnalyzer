@@ -4,6 +4,7 @@ from flask_smorest import Blueprint, abort
 from schemas import PlainExerciseSchema, PlainSupplementSchema
 from models import SupplementModel, WorkoutModel
 from db import db
+from flask_jwt_extended import jwt_required
 
 blp = Blueprint("supplements", __name__, description="Operations on supplements", url_prefix="/api")
 
@@ -11,6 +12,7 @@ blp = Blueprint("supplements", __name__, description="Operations on supplements"
 @blp.route("/supplement")
 class Supplement1(MethodView):
 
+    @jwt_required()
     @blp.arguments(PlainSupplementSchema)
     @blp.response(200, PlainSupplementSchema, description="Returned when supplement entry is created and appended to workout")
     def post(self, supp_data):
@@ -35,6 +37,7 @@ class Supplement2(MethodView):
         else:
             return {"Error": "Invalid supplement entry id."}
 
+    @jwt_required()
     def delete(self, supp_id):
         supplement = SupplementModel.query.get(supp_id)
         if supplement:

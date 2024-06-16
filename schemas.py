@@ -11,6 +11,11 @@ class PlainTagSchema(Schema):
     name = fields.Str(required=True)
 
 
+class UserSchema(Schema):
+    username = fields.Str(required=True)
+    password = fields.Str(load_only=True)
+
+
 class PlainWorkoutSchema(Schema):
     id = fields.Int(dump_only=True)
     date = fields.Date(required=True)
@@ -58,4 +63,3 @@ class TagSchema(PlainTagSchema):
 class WorkoutSchema(PlainWorkoutSchema):
     supplements = fields.List(fields.Nested(PlainSupplementSchema(), dump_only=True))
     series = fields.List(fields.Nested(PlainSeriesSchema(), dump_only=True))
-

@@ -5,6 +5,8 @@ from models import TagModel, ExerciseModel
 from db import db
 from flask import request
 from sqlalchemy.exc import IntegrityError
+from flask_jwt_extended import jwt_required
+
 
 blp = Blueprint("tag", __name__, description="Operations on tags", url_prefix="/api")
 
@@ -12,6 +14,7 @@ blp = Blueprint("tag", __name__, description="Operations on tags", url_prefix="/
 @blp.route("/tag")
 class Tag1(MethodView):
 
+    @jwt_required()
     def post(self):
         tag_data = request.get_json()
         tag = TagModel(**tag_data)
@@ -21,6 +24,7 @@ class Tag1(MethodView):
         except IntegrityError:
             return {"message": "Tag with that name already exists"}
         return {"message": "Tag created successfully"}
+
 
     @blp.response(200, TagSchema(many=True))
     def get(self):
@@ -42,6 +46,7 @@ class Tag2(MethodView):
         else:
             return {"Error": "Invalid tag id"}
 
+    @jwt_required()
     def delete(self, tag_id):
         tag = TagModel.query.get(tag_id)
         if tag:
@@ -51,6 +56,7 @@ class Tag2(MethodView):
         else:
             return {"Error": "Invalid tag id"}
 
+    @jwt_required()
     def put(self, tag_id):
         tag_data = request.get_json()
         tag = TagModel.query.get(tag_id)
@@ -64,6 +70,7 @@ class Tag2(MethodView):
 @blp.route("/exercise/<string:ex_id>/tag/<string:tag_id>")
 class Tag3(MethodView):
 
+    @jwt_required()
     def post(self, ex_id, tag_id):
 
         exercise = ExerciseModel.query.get(ex_id)
@@ -78,6 +85,7 @@ class Tag3(MethodView):
             return {"Error": "Invalid exercise id"}
         return {"message": "Tag appended successfully"}
 
+    @jwt_required()
     def delete(self, ex_id, tag_id):
 
         exercise = ExerciseModel.query.get(ex_id)

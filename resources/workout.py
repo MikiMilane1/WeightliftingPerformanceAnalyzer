@@ -7,6 +7,7 @@ from models import WorkoutModel
 import datetime as dt
 from schemas import WorkoutSchema, PlainWorkoutSchema
 from sqlalchemy.exc import IntegrityError
+from flask_jwt_extended import jwt_required
 
 blp = Blueprint("workout", __name__, description="Operations on workouts", url_prefix="/api")
 
@@ -14,6 +15,7 @@ blp = Blueprint("workout", __name__, description="Operations on workouts", url_p
 @blp.route("/workout")
 class Workout(MethodView):
 
+    @jwt_required()
     @blp.alt_response(404, description="Returned when a workout with that date already exists")
     @blp.response(200, WorkoutSchema, description="Returned when a workout is added to the DB")
     def post(self):
@@ -38,7 +40,7 @@ class Workout(MethodView):
         except IntegrityError:
             abort(404, message="A workout with that date already exists.")
 
-
+    @jwt_required()
     @blp.response(200, PlainWorkoutSchema(many=True))
     def get(self):
         return WorkoutModel.query.all()
@@ -55,6 +57,7 @@ class Workout(MethodView):
         else:
             return {"message": "Workout with that id does not exist"}
 
+    @jwt_required()
     def delete(self, workout_id):
         workout = WorkoutModel.query.get(workout_id)
         if workout:
@@ -64,6 +67,7 @@ class Workout(MethodView):
         else:
             return {"message": "Workout with that id does not exist"}
 
+    @jwt_required()
     def put(self, workout_id):
         workout_data = request.get_json()
         workout = WorkoutModel.query.get(workout_id)

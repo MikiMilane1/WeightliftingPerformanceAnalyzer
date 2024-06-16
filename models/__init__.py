@@ -4,4 +4,6 @@ from models.workout import WorkoutModel
 from models.supplements import SupplementModel
 from models.tag import TagModel
 from models.exercise_tag_link import ExerciseTagsLink
+from models.user import UserModel
+from models.jti import ExpiredJTIModel
 # from models.workout_supplement_link import WorkoutSupplementLink

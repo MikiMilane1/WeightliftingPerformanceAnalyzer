@@ -5,6 +5,7 @@ from schemas import ExerciseSchema
 from models import ExerciseModel
 from db import db
 from sqlalchemy.exc import IntegrityError
+from flask_jwt_extended import jwt_required
 
 blp = Blueprint("exercises", __name__, description="Operations on exercises", url_prefix="/api")
 
@@ -16,6 +17,7 @@ class Exercise1(MethodView):
     def get(self):
         return ExerciseModel.query.all()
 
+    @jwt_required()
     @blp.alt_response(400, description="Returned if the exercise with that name already exists.")
     @blp.response(200, ExerciseSchema)
     def post(self):
@@ -41,6 +43,7 @@ class Exercise2(MethodView):
         else:
             abort(404, message="There is no exercise with that id.")
 
+    @jwt_required()
     @blp.alt_response(404, description="Returned if the exercise with that id does not exist.")
     def delete(self, exercise_id):
         exercise = ExerciseModel.query.get(exercise_id)
@@ -51,6 +54,7 @@ class Exercise2(MethodView):
         else:
             abort(404, message="Invalid exercise id.")
 
+    @jwt_required()
     @blp.alt_response(404, description="Returned if the exercise with that id does not exist.")
     @blp.response(200, ExerciseSchema)
     def put(self, exercise_id):
