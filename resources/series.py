@@ -12,9 +12,9 @@ blp = Blueprint("series", __name__, description="Operations on series", url_pref
 @blp.route("/series")
 class Series1(MethodView):
 
-
-    @blp.response(200, PlainSeriesSchema)
+    @blp.response(200, PlainSeriesSchema(many=True))
     def get(self):
+        print('should be returning all series')
         return SeriesModel.query.all()
 
     @jwt_required()
@@ -25,6 +25,8 @@ class Series1(MethodView):
         db.session.add(series)
         db.session.commit()
         return series
+
+    # TODO create put request for editing series
 
 
 @blp.route("/series/<string:series_id>")
@@ -53,11 +55,22 @@ class Series2(MethodView):
     @jwt_required()
     @blp.arguments(PlainSeriesSchema)
     @blp.response(200, PlainSeriesSchema)
-    def put(self, series_id):
-        series_data = request.get_json()
+    def put(self, series_data, series_id):
         series = SeriesModel.query.get(series_id)
         if series:
-            series = SeriesModel(**series_data)
+            series.exercise_id = series_data["exercise_id"]
+            series.workout_id = series_data["workout_id"]
+            series.sets = series_data["sets"]
+            series.s1_reps = series_data["s1_reps"]
+            series.s1_weight = series_data["s1_weight"]
+            series.s2_reps = series_data["s2_reps"]
+            series.s2_weight = series_data["s2_weight"]
+            series.s3_reps = series_data["s3_reps"]
+            series.s3_weight = series_data["s3_weight"]
+            series.s4_reps = series_data["s4_reps"]
+            series.s4_weight = series_data["s4_weight"]
+            series.s5_reps = series_data["s5_reps"]
+            series.s5_weight = series_data["s5_weight"]
             db.session.add(series)
             db.session.commit()
             return series
@@ -70,4 +83,3 @@ class Series3(MethodView):
 
     def delete(self):
         raise NotImplementedError
-

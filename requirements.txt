@@ -6,3 +6,5 @@ Flask-SQLAlchemy==3.1.1
 python-dotenv
 passlib
 flask-jwt-extended
+matplotlib
+pandas

@@ -62,7 +62,7 @@ class SeriesModel(db.Model):
 
     @property
     def mean_1rm(self):
-        return (self.s1_1rm + self.s2_1rm + self.s3_1rm + self.s4_1rm + self.s5_1rm) / self.sets
+        return round((self.s1_1rm + self.s2_1rm + self.s3_1rm + self.s4_1rm + self.s5_1rm) / self.sets, 0)
 
 
 

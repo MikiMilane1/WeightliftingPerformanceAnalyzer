@@ -10,6 +10,7 @@ from resources.supplement import blp as SupplementBluePrint
 from resources.series import blp as SeriesBluePrint
 from resources.testing import blp as TestingBluePrint
 from resources.user import blp as UserBluePrint
+from resources.plots import blp as GraphsBlueprint
 from datetime import timedelta
 from flask_jwt_extended import JWTManager
 from flask import jsonify
@@ -36,7 +37,7 @@ def create_app(db_url=None):
 
     # Configure jwt
     app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
-    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=3)
+    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=30)
     app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(hours=2)
 
     jwt = JWTManager(app)
@@ -103,5 +104,7 @@ def create_app(db_url=None):
     api.register_blueprint(SeriesBluePrint)
     api.register_blueprint(TestingBluePrint)
     api.register_blueprint(UserBluePrint)
+
+    app.register_blueprint(GraphsBlueprint)
 
     return app
