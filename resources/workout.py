@@ -33,6 +33,8 @@ class Workout(MethodView):
             h_of_sleep=workout_data["h_of_sleep"],
             time_of_day=workout_data["time_of_day"]
         )
+        if workout_data["time_of_day"] not in ["morning", "evening"]:
+            abort(404, message="Invalid 'time_of_day' input.")
         try:
             db.session.add(workout)
             db.session.commit()

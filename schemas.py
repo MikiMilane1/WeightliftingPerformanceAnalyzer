@@ -27,7 +27,7 @@ class PlainSupplementSchema(Schema):
     id = fields.Int(dump_only=True)
     name = fields.Str(required=True)
     quantity = fields.Float(required=True)
-    workout_id = fields.Int(load_only=True)
+    workout_id = fields.Int(required=True)
     timing = fields.String(required=True)
 
 
